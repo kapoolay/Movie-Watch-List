@@ -4,15 +4,16 @@ import sqlite3
 # Queries for the application 
 CREATE_MOVIES_TABLE = """ CREATE TABLE IF NOT EXISTS movies (
     title TEXT,
-    release_date REAL,
+    release_timestamp REAL,
     watched INTEGER
 );"""
 
-INSERT_MOVIES = "INSERT INTO movies (title, release_date, watched) VALUES (?, ?, 0);"
+INSERT_MOVIES = "INSERT INTO movies (title, release_timestamp, watched) VALUES (?, ?, 0);"
 SELECT_ALL_MOVIES = "SELECT * FROM movies;"
 SELECT_UPCOMING_MOVIES = "SELECT * FROM movies WHERE release_timestamp > ?;"
 SELECT_WATCHED_MOVIES = "SELECT * FROM movies WHERE watched = 1;"
 SET_MOVIE_WATCHED = "UPDATE movies SET watched = 1 WHERE title = ?;"
+DELETE_MOVIE = "DELETE FROM movies WHERE title = ?;"
 
 
 
