@@ -1,6 +1,8 @@
 import datetime
 import database
 
+
+## UI Menu for the User
 menu = """Please select one of the following options:
 1) Add new movie.
 2) View upcoming movies.
@@ -10,12 +12,11 @@ menu = """Please select one of the following options:
 6) Exit.
 
 Your selection: """
+
 welcome = "Welcome to the watchlist app!"
 
 
-print(welcome)
-database.create_tables()
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Functions
 
 ## Prompt for user to add a movie
 def prompt_add_movie():
@@ -38,11 +39,24 @@ def print_movie_list(heading, movies):
     print("---- \n")
 
 
-## Function to mark a watched movie
-def prompt_watch_movie():
-    movie_title = input("Enter movie title you've watched: ")
-    database.watch_movie(movie_title)
+def print_watched_movie_list(username, movies):
+    print(f"-- {username}'s watched movies --")
+    for movie in movies:
+        print(f"{movie[1]}")    ## this prints out the title column from the 'watched' table
+    print("---- \n")
 
+
+## Prompt to mark a watched movie
+def prompt_watch_movie():
+    username = input("Username: ")
+    movie_title = input("Enter movie title you've watched: ")
+    database.watch_movie(username, movie_title)
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Beginning of Application
+
+print(welcome)
+database.create_tables()
 
 
 while (user_input := input(menu)) != "6":
@@ -57,7 +71,8 @@ while (user_input := input(menu)) != "6":
     elif user_input == "4":
         prompt_watch_movie()
     elif user_input == "5":
-        movies = database.get_watched_movies()
-        print_movie_list("Watched", movies)
+        username = input("Username: ")
+        movies = database.get_watched_movies(username)
+        print_watched_movie_list(username, movies)
     else:
         print("Invalid input, please try again!")
