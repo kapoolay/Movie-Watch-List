@@ -33,7 +33,7 @@ def prompt_add_movie():
 
 ## Function to print movies list
 def print_movie_list(heading, movies):
-    print(f"-- {heading} movies --")
+    print(f"-- {heading} --")
 
     for _id, title, release_date in movies:
         movie_date = datetime.datetime.fromtimestamp(release_date)
@@ -75,7 +75,7 @@ def prompt_search_movies():
     search_term = input("Enter partial movie title: ")
     movies =  database.search_movies(search_term)
     if movies:
-        print_movie_list("Movies found", movies)
+        print_movie_list("Movies Found", movies)
     else:
         print("Found no movies for that search term!")
 
@@ -97,10 +97,10 @@ while (user_input := input(menu)) != "8":
         prompt_add_movie()
     elif user_input == "2":
         movies = database.get_movies(True)
-        print_movie_list("Upcoming", movies)
+        print_movie_list("Upcoming Movies", movies)
     elif user_input == "3":
         movies = database.get_movies()
-        print_movie_list("All", movies)
+        print_movie_list("All Movies", movies)
     elif user_input == "4":
         prompt_watch_movie()
     elif user_input == "5":
