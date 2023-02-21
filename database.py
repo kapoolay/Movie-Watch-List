@@ -2,7 +2,7 @@ import datetime
 import sqlite3
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SQL Queries for the application 
-CREATE_MOVIES_TABLE = """ CREATE TABLE IF NOT EXISTS movies (
+CREATE_MOVIES_TABLE = """CREATE TABLE IF NOT EXISTS movies (
     id INTEGER PRIMARY KEY,
     title TEXT,
     release_timestamp REAL
@@ -13,7 +13,7 @@ CREATE_USERS_TABLE = """CREATE TABLE IF NOT EXISTS users (
 );"""
 
 ## When using 'FOREIGN KEY', this query needs to be after the referenced tables have been created
-CREATE_WATCHED_TABLE = """ CREATE TABLE IF NOT EXISTS watched (
+CREATE_WATCHED_TABLE = """CREATE TABLE IF NOT EXISTS watched (
     user_username TEXT,
     movie_id INTEGER,
     FOREIGN KEY(user_username) REFERENCES users(username),
@@ -21,12 +21,15 @@ CREATE_WATCHED_TABLE = """ CREATE TABLE IF NOT EXISTS watched (
 );"""
 
 # Queries for 'movies' table
-INSERT_MOVIES = "INSERT INTO movies (title, release_timestamp) VALUES (?, ?);"
+INSERT_MOVIE = "INSERT INTO movies (title, release_timestamp) VALUES (?, ?);"
 INSERT_USER = "INSERT INTO users (username) VALUES (?);"
 DELETE_MOVIE = "DELETE FROM movies WHERE title = ?;"
 SELECT_ALL_MOVIES = "SELECT * FROM movies;"
 SELECT_UPCOMING_MOVIES = "SELECT * FROM movies WHERE release_timestamp > ?;"
-SELECT_WATCHED_MOVIES = "SELECT * FROM watched WHERE watcher_name = ?;"
+SELECT_WATCHED_MOVIES = """SELECT movies.* FROM movies
+JOIN watched ON movies.id = watched.movie_id
+JOIN users ON watched.user_username = users.username
+WHERE users.username = ?;"""
 INSERT_WATCHED_MOVIE = "INSERT INTO watched (user_username, title) VALUES (?, ?);"
 SET_MOVIE_WATCHED = "UPDATE movies SET watched = 1 WHERE title = ?;"
 
@@ -49,7 +52,7 @@ def add_user(username):
         
 def add_movie(title, release_timestamp):
     with connection:
-        connection.execute(INSERT_MOVIES, (title, release_timestamp))
+        connection.execute(INSERT_MOVIE, (title, release_timestamp))
 
 
 def get_movies(upcoming=False):

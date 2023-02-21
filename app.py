@@ -42,12 +42,13 @@ def print_movie_list(heading, movies):
     print("---- \n")
 
 
-## Function to print watched movies by user
-def print_watched_movie_list(username, movies):
-    print(f"-- {username}'s watched movies --")
-    for movie in movies:
-        print(f"{movie[1]}")    ## this prints out the title column from the 'watched' table
-    print("---- \n")
+## Used in phase 2 of the build
+# ## Function to print watched movies by user
+# def print_watched_movie_list(username, movies):
+#     print(f"-- {username}'s watched movies --")
+#     for movie in movies:
+#         print(f"{movie[1]}")    ## this prints out the title column from the 'watched' table
+#     print("---- \n")
 
 
 ## Prompt to mark a watched movie
@@ -55,6 +56,17 @@ def prompt_watch_movie():
     username = input("Username: ")
     movie_id = input("Movie ID: ")
     database.watch_movie(username, movie_id)
+
+
+def prompt_show_watched_movies():
+    username = input("Username: ")
+    movies = database.get_watched_movies(username)
+    if movies:
+        print_movie_list("Watched", movies)
+    else:
+        print(f"{username} has not watched any movies yet!")
+
+    print("---- \n")
 
 
 ## Prompt to add a user
@@ -81,9 +93,7 @@ while (user_input := input(menu)) != "7":
     elif user_input == "4":
         prompt_watch_movie()
     elif user_input == "5":
-        username = input("Username: ")
-        movies = database.get_watched_movies(username)
-        print_watched_movie_list(username, movies)
+        prompt_show_watched_movies()
     elif user_input == "6":
         prompt_add_user()
     else:
