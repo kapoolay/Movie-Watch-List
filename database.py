@@ -34,6 +34,9 @@ INSERT_WATCHED_MOVIE = "INSERT INTO watched (user_username, title) VALUES (?, ?)
 SET_MOVIE_WATCHED = "UPDATE movies SET watched = 1 WHERE title = ?;"
 SEARCH_MOVIE = """SELECT * FROM movies WHERE title LIKE ?;"""
 
+# Index release_timestamp if it runs too slow
+CREATE_RELEASE_INDEX = "CREATE INDEX IF NOT EXISTS idx_movies_release ON movies(release_timestamp)"
+
 
 # Variable to connect to the SQLite3 DB
 connection = sqlite3.connect("data.db")
@@ -45,6 +48,7 @@ def create_tables():
         connection.execute(CREATE_MOVIES_TABLE)
         connection.execute(CREATE_USERS_TABLE)
         connection.execute(CREATE_WATCHED_TABLE)
+        connection.execute(CREATE_RELEASE_INDEX)
 
 
 def add_user(username):
