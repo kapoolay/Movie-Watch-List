@@ -30,7 +30,7 @@ SELECT_WATCHED_MOVIES = """SELECT movies.* FROM movies
 JOIN watched ON movies.id = watched.movie_id
 JOIN users ON watched.user_username = users.username
 WHERE users.username = ?;"""
-INSERT_WATCHED_MOVIE = "INSERT INTO watched (user_username, title) VALUES (?, ?);"
+INSERT_WATCHED_MOVIE = "INSERT INTO watched (user_username, movie_id) VALUES (?, ?);"
 SET_MOVIE_WATCHED = "UPDATE movies SET watched = 1 WHERE title = ?;"
 SEARCH_MOVIE = """SELECT * FROM movies WHERE title LIKE ?;"""
 
